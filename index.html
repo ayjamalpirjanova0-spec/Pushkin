@@ -1,35 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<title>Oltin baliq ertagi — Slayd</title>
+<title>Oltin Baliq Slayd Sayt</title>
 <style>
-body {
-    margin: 0;
+* { margin:0; padding:0; box-sizing:border-box; }
+body, html {
+    height: 100%;
+    width: 100%;
     font-family: Arial, sans-serif;
     background: linear-gradient(#0a2342, #1e3c72);
     overflow: hidden;
 }
 
-/* 🎄 TOP DECOR */
+/* TOP DECOR */
 #top {
     position: fixed;
     top: 0;
     width: 100%;
-    height: 100px;
+    height: 120px;
     text-align: center;
     z-index: 10;
 }
 
 .trees {
-    font-size: 40px;
+    font-size: 50px;
 }
 
 .lights span {
-    font-size: 22px;
+    font-size: 24px;
     animation: blink 1.5s infinite alternate;
 }
-
 .lights span:nth-child(odd) { animation-delay: .5s; }
 
 @keyframes blink {
@@ -37,39 +39,46 @@ body {
     to { opacity: 1; }
 }
 
-/* 🎞 SLIDER */
+/* SLIDER CONTAINER */
 .slider {
+    position: absolute;
+    top: 120px; /* yuqoridagi dekor balandligi */
+    left:0;
+    width: 100%;
+    height: calc(100% - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
 }
 
+/* MAIN SLIDE */
 .slide {
-    width: 60%;
-    height: 70%;
+    width: 70%;   /* asosiy rasm kengligi */
+    height: 80%;  /* asosiy rasm balandligi */
     position: relative;
+    flex-shrink: 0;
 }
 
 .slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* rasmni deformatsiya qilmaydi */
     border-radius: 20px;
-    box-shadow: 0 0 30px rgba(0,0,0,.6);
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
 }
 
 /* SIDE PREVIEW */
 .preview {
-    width: 20%;
-    height: 50%;
+    width: 15%;
+    height: 60%;
     opacity: 0.4;
+    flex-shrink: 0;
 }
 
 .preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 15px;
 }
 
@@ -78,7 +87,7 @@ button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 40px;
+    font-size: 50px;
     background: none;
     border: none;
     color: white;
@@ -86,35 +95,44 @@ button {
     z-index: 5;
 }
 
-#prev { left: 10px; }
-#next { right: 10px; }
+#prev { left: -60px; } /* rasm chetidan tashqariga */
+#next { right: -60px; }
 
-/* ❄️ SNOW */
+/* SNOW */
 .snow {
     position: fixed;
     top: -10px;
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     animation: fall linear infinite;
 }
 
 @keyframes fall {
     to { transform: translateY(110vh); }
 }
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+    .slide { width: 60%; height: 70%; }
+    .preview { width: 12%; height: 50%; }
+    button { font-size: 40px; }
+}
+
+@media(max-width:768px){
+    .slide { width: 80%; height: 60%; }
+    .preview { display: none; } /* mobilda preview yashirilsin */
+}
 </style>
 </head>
-
 <body>
 
-<!-- 🎄 TOP -->
+<!-- TOP DECOR -->
 <div id="top">
     <div class="trees">🎄 🎄 🎄 🎄 🎄</div>
-    <div class="lights">
-        <span>💡</span><span>💡</span><span>💡</span><span>💡</span><span>💡</span>
-    </div>
+    <div class="lights"><span>💡</span><span>💡</span><span>💡</span><span>💡</span><span>💡</span></div>
 </div>
 
-<!-- 🎞 SLIDER -->
+<!-- SLIDER -->
 <div class="slider">
     <div class="preview"><img id="prevImg"></div>
 
@@ -155,7 +173,7 @@ document.getElementById("prev").onclick = () => {
 
 updateSlide();
 
-/* ❄️ SNOW */
+/* SNOW */
 function snow() {
     const s = document.createElement("div");
     s.className = "snow";
