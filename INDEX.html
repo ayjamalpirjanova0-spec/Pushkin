@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Oltin baliq ertagi — Slayd</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#0a2342, #1e3c72);
+    overflow: hidden;
+}
+
+/* 🎄 TOP DECOR */
+#top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    z-index: 10;
+}
+
+.trees {
+    font-size: 40px;
+}
+
+.lights span {
+    font-size: 22px;
+    animation: blink 1.5s infinite alternate;
+}
+
+.lights span:nth-child(odd) { animation-delay: .5s; }
+
+@keyframes blink {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
+
+/* 🎞 SLIDER */
+.slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.slide {
+    width: 60%;
+    height: 70%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
+
+/* SIDE PREVIEW */
+.preview {
+    width: 20%;
+    height: 50%;
+    opacity: 0.4;
+}
+
+.preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* BUTTONS */
+button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 5;
+}
+
+#prev { left: 10px; }
+#next { right: 10px; }
+
+/* ❄️ SNOW */
+.snow {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 14px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎄 TOP -->
+<div id="top">
+    <div class="trees">🎄 🎄 🎄 🎄 🎄</div>
+    <div class="lights">
+        <span>💡</span><span>💡</span><span>💡</span><span>💡</span><span>💡</span>
+    </div>
+</div>
+
+<!-- 🎞 SLIDER -->
+<div class="slider">
+    <div class="preview"><img id="prevImg"></div>
+
+    <div class="slide">
+        <button id="prev">❮</button>
+        <img id="mainImg">
+        <button id="next">❯</button>
+    </div>
+
+    <div class="preview"><img id="nextImg"></div>
+</div>
+
+<script>
+let images = [];
+for(let i=1;i<=17;i++) images.push(`img${i}.jpg`);
+
+let index = 0;
+
+const mainImg = document.getElementById("mainImg");
+const prevImg = document.getElementById("prevImg");
+const nextImg = document.getElementById("nextImg");
+
+function updateSlide(){
+    mainImg.src = images[index];
+    prevImg.src = images[(index - 1 + images.length) % images.length];
+    nextImg.src = images[(index + 1) % images.length];
+}
+
+document.getElementById("next").onclick = () => {
+    index = (index + 1) % images.length;
+    updateSlide();
+};
+
+document.getElementById("prev").onclick = () => {
+    index = (index - 1 + images.length) % images.length;
+    updateSlide();
+};
+
+updateSlide();
+
+/* ❄️ SNOW */
+function snow() {
+    const s = document.createElement("div");
+    s.className = "snow";
+    s.innerHTML = "❄";
+    s.style.left = Math.random()*window.innerWidth+"px";
+    s.style.animationDuration = (3+Math.random()*5)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),8000);
+}
+setInterval(snow, 200);
+</script>
+
+</body>
+</html>
